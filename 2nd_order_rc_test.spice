@@ -1,0 +1,33 @@
+***** 2nd Order RC Circuit Frequency Response *****
+.PARAM R_1 = 2422.258188925465
+.PARAM C_1 = 4.772830511663394e-08
+.PARAM R_2 = 2922.114231196243
+.PARAM C_2 = 6.696092413405754e-08
+.PARAM START = 1
+.PARAM STOP = 1000000000.0
+**--**--**--**--**--**--**--**--**--**
+r1 1 2 {R_1}
+c1 2 0 {C_1}
+r2 2 3 {R_2}
+c2 3 0 {C_2}
+
+
+********Specifying an AC source with zero dc
+vin 1 0 dc 0 ac 1
+********AC analysis for 1 Hz to 1MHz, 10 points per decade
+.ac dec 10 {START} {STOP}
+
+
+.control
+set filetype=ascii
+run
+
+let m=vdb(3)
+
+*plot m xlog
+
+meas ac cutoff find frequency WHEN m=-3.0 CROSS=LAST
+
+write 2nd_order_rc_test.raw cutoff
+.endc
+.end
