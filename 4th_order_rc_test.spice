@@ -1,0 +1,40 @@
+***** 4th Order RC Circuit Frequency Response *****
+.PARAM R_1 = 1629.9485420697677
+.PARAM C_1 = 8.434807169357197e-08
+.PARAM R_2 = 2789.9625196324346
+.PARAM C_2 = 2.6580530030282683e-08
+.PARAM R_3 = 358.39420221732627
+.PARAM C_3 = 3.845197688544371e-08
+.PARAM R_4 = 2271.8581929128686
+.PARAM C_4 = 4.827516825619645e-09
+.PARAM START = 1
+.PARAM STOP = 1000000000.0
+**--**--**--**--**--**--**--**--**--**
+r1 1 2 {R_1}
+c1 2 0 {C_1}
+r2 2 3 {R_2}
+c2 3 0 {C_2}
+r3 3 4 {R_3}
+c3 4 0 {C_3}
+r4 4 5 {R_4}
+c4 5 0 {C_4}
+
+********Specifying an AC source with zero dc
+vin 1 0 dc 0 ac 1
+********AC analysis for 1 Hz to 1MHz, 10 points per decade
+.ac dec 10 {START} {STOP}
+
+
+.control
+set filetype=ascii
+run
+
+let m=vdb(5)
+
+*plot m xlog
+
+meas ac cutoff find frequency WHEN m=-3.0 CROSS=LAST
+
+write 4th_order_rc_test.raw cutoff vdb(2) vdb(3) vdb(4) vdb(5)
+.endc
+.end
