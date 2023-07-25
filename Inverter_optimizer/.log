@@ -1,0 +1,18 @@
+
+Note: Compatibility modes selected: hs a
+
+
+Circuit: ********digital inverter**********
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 331
+switch_point        =  1.749796e+00
+i_max               =  1.065308e-04 at=  1.670000e+00
+i_max_at            =  1.670000e+00 with=  1.065308e-04
+switch_point = 1.749796e+00
+i_max = 1.065308e-04
+i_max_at = 1.670000e+00
+ASCII raw file "inv.raw"
+Note: No ".plot", ".print", or ".fourier" lines; no simulations run

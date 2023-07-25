@@ -1,0 +1,37 @@
+********Digital inverter**********
+.PARAM WP = 2.4961458792730544e-06
+.PARAM LMIN = 4.184879699530053e-07
+.PARAM VD = 3.3
+**--**--**--**--**--**--**--**--**--**
+
+*** *** SUPPLY VOLTAGES *** ***
+VDD VDD 0 {VD}
+VSS VSS 0 0
+VIN IN  0 1
+
+*** *** CIRCUIT *** ***
+MP OUT IN VDD VDD PM W={WP}    L={LMIN} pd={2*WP}   ps={2*WP}
+MN OUT IN VSS VSS NM W={WP/3}  L={LMIN} pd={2/3*WP} ps={2/3*WP}
+CL OUT VSS 12p
+
+*** *** ANALYSIS *** ***
+
+.options savecurrents
+.include b3.typ
+
+.control
+set color0 =white
+set filetype = ascii
+dc VIN 0 3.3 0.01
+*plot OUT @mn[id]*20000
+
+meas dc switch_point find out WHEN v-sweep=1.65 CROSS=LAST
+meas dc i_max    MAX    @mn[id] 
+meas dc i_max_at MAX_AT @mn[id]
+
+print switch_point i_max i_max_at
+
+write inv.raw OUT @mn[id] switch_point i_max i_max_at
+.endc
+
+.END
